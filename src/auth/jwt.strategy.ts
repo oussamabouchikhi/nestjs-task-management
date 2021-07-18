@@ -5,7 +5,7 @@ import { privateDecrypt } from 'crypto';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { JwtPayload } from './jwt-payload.interface';
 import { UserRepository } from './user.repository';
-
+import * as config from 'config';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @InjectRepository(UserRepository)
@@ -13,7 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'topSecret31',
+      secretOrKey: process.env.JWT_SECRET || config.get('jwt.secret'),
     });
   }
 
